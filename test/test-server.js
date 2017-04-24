@@ -12,11 +12,11 @@ chai.use(chaiHttp);
 describe("Shopping List", function () {
 
 	beforeEach(function() {
-        storage.items = [];
-        storage.setId = 1;
-        storage.add("Broad beans"); //0
-        storage.add("Tomatoes"); //1
-        storage.add("Peppers"); //2
+        items = [];
+        setId = 1;
+        add("Broad beans"); //0
+        add("Tomatoes"); //1
+        add("Peppers"); //2
     });
 
     it("should list items on GET", function (done) {
@@ -54,14 +54,14 @@ describe("Shopping List", function () {
                 res.body.name.should.be.a("string");
                 res.body.id.should.be.a("number");
                 res.body.name.should.equal("Kale");
-                storage.items.should.be.a("array");
-                storage.items.should.have.length(4);
-                storage.items[3].should.be.a("object");
-                storage.items[3].should.have.property("id");
-                storage.items[3].should.have.property("name");
-                storage.items[3].id.should.be.a("number");
-                storage.items[3].name.should.be.a("string");
-                storage.items[3].name.should.equal("Kale");
+                items.should.be.a("array");
+                items.should.have.length(4);
+                items[3].should.be.a("object");
+                items[3].should.have.property("id");
+                items[3].should.have.property("name");
+                items[3].id.should.be.a("number");
+                items[3].name.should.be.a("string");
+                items[3].name.should.equal("Kale");
                 done();
             });
     });
@@ -80,14 +80,14 @@ describe("Shopping List", function () {
                 res.body.name.should.be.a("string");
                 res.body.id.should.be.a("number");
                 res.body.name.should.be.equal("Kale Dog");
-                storage.items.should.be.a("array");
-                storage.items.should.have.length(3);
-                storage.items[1].should.be.a("object");
-                storage.items[1].should.have.property("name");
-                storage.items[1].should.have.property("id");
-                storage.items[1].id.should.be.a("number");
-                storage.items[1].name.should.be.a("string");
-                storage.items[1].name.should.equal("Kale Dog");
+                items.should.be.a("array");
+                items.should.have.length(3);
+                items[1].should.be.a("object");
+                items[1].should.have.property("name");
+                items[1].should.have.property("id");
+                items[1].id.should.be.a("number");
+                items[1].name.should.be.a("string");
+                items[1].name.should.equal("Kale Dog");
                 done();
             });
     });
