@@ -72,7 +72,7 @@ app.use("*", function(req,res){
 
 
 exports.app = app;
-exports.runServer= runServer;
+exports.runServer = runServer;
 
 
 
