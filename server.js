@@ -7,31 +7,31 @@ var config = require("./config");
 var app = express();
 
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 var runServer = function(callback) {
-    mongoose.connect(config.DATABASE_URL, function(err){
-        if (err && callback) {
-            return callback(err);
-        }
+	mongoose.connect(config.DATABASE_URL, function(err){
+		if (err && callback) {
+			return callback(err);
+		}
         
-        app.listen(config.PORT, function(){
-           console.log('listening on localhost:' + config.PORT);
-           if (callback) {
-               callback();
-           }
+		app.listen(config.PORT, function(){
+			console.log('listening on localhost:' + config.PORT);
+			if (callback) {
+				callback();
+			}
            
-        });
+		});
 
-    });
+	});
 };
 
 if (require.main === module) {
-    runServer(function (err) {
-        if (err) {
-            console.error(err);
-        }
-    });
+	runServer(function (err) {
+		if (err) {
+			console.error(err);
+		}
+	});
 }
 
 
@@ -39,35 +39,68 @@ if (require.main === module) {
 var Item = require("./models/item");
 
 app.get("/items", function(req, res){
-    Item.find(function(err,items){
-        if(err){
-            return res.status(500).json({
-                message: "internal Server Error"
-            });
-        }
-        res.json(items);
-    });
+	Item.find(function(err,items){
+		if(err){
+			return res.status(500).json({
+				message: "internal Server Error"
+			});
+		}
+		res.json(items);
+	});
 });
 
 app.post("/items" , function(req,res){
-    Item.create({
-        name:req.body.name
-    }, function(err, item) {
-        if (err) {
-            return res.status(500).json({
-                message:"Internal Server Error"
-           });
-        }
-    res.status(201).json(item);
-    
-    });
+	Item.create({
+		name:req.body.name
+	}, function(err, item) {
+		if (err) {
+			return res.status(500).json({
+				message:"Internal Server Error"
+			});
+		}
+		res.status(201).json(item);
+   
+	});
 });
 
+app.delete("/items/:id" , function(req,res){
+	Item.findByIdAndRemove(req.params.id,
+        function(err, item) {
+	if (err) {
+		return res.status(500).json({
+			message:"Internal Server Error"
+		});
+	}
+	res.status(201).json(item);
+    
+});
+});
+
+app.put("/items/:id", function(req, res){
+	Item.findById (req.params.id, function(err, item){
+		if ( err ){
+			return res.status(500).json({
+				message:"internal server error"
+			});
+		} 
+		else {
+			item.name = req.body.name;
+			item.save(function(err,item){
+				if ( err ){
+					return res.status(500).json({
+					message:"internal server error"
+				});
+				}
+				res.send(item);
+			});
+		}
+	});
+});
 
 app.use("*", function(req,res){
-    res.status(404).json({
-        message: "Not Found"
-    });
+	res.status(404).json({
+		message: "Not Found"
+	});
 });
 
 
